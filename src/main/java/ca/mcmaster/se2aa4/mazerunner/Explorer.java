@@ -1,5 +1,5 @@
 class Explorer {
-    private static final Logger logger = LogManager.getLogger(Explorer.class); // Add this line
+    private static final Logger logger = LogManager.getLogger(Explorer.class); 
     private final Maze maze;
 
     public Explorer(Maze maze) {
