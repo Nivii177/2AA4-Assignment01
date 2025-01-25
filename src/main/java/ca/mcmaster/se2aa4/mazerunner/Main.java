@@ -1,13 +1,14 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+package ca.mcmaster.se2aa4.mazerunner;
 
+import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.parser.ParseException;
-import org.apache.commons.cli.*;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -16,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
         // Configure Apache CLI
         Options options = new Options();
-        
+
         Option input = new Option("i", "input", true, "input file path");
         input.setRequired(true);
         options.addOption(input);
@@ -51,4 +52,3 @@ public class Main {
         logger.info("Maze exploration complete.");
     }
 }
-
