@@ -6,22 +6,80 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+public class Maze {
+    private char[][] grid;
+    private int entryRow;
+    private int entryCol;
+    private int exitRow;
+    private int exitCol;
 
-class Maze {
-    private final List<String> grid = new ArrayList<>();
+    public Maze(String filePath) {
+        parseMaze(filePath);
+        findEntryAndExit();
+    }
 
-    public static Maze loadFromFile(String filePath) throws IOException {
-        Maze maze = new Maze();
+    private void parseMaze(String filePath) {
+        List<char[]> rows = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                maze.grid.add(line);
+                rows.add(line.toCharArray());
             }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read maze file: " + filePath, e);
         }
-        return maze;
+        grid = rows.toArray(new char[0][]);
     }
 
-    public List<String> getGrid() {
-        return grid;
+    private void findEntryAndExit() {
+        // Find entry 
+        for (int row = 0; row < grid.length; row++) {
+            if (grid[row][0] == ' ') {
+                entryRow = row;
+                entryCol = 0;
+                break;
+            }
+        }
+
+        // Find exit 
+        for (int row = 0; row < grid.length; row++) {
+            if (grid[row][grid[row].length - 1] == ' ') {
+                exitRow = row;
+                exitCol = grid[row].length - 1;
+                break;
+            }
+        }
+    }
+
+    public char getTile(int row, int col) {
+        return grid[row][col];
+    }
+
+    public int getHeight() {
+        return grid.length;
+    }
+
+    public int getWidth() {
+        return grid[0].length;
+    }
+
+    public boolean isValidPosition(int row, int col) {
+        return row >= 0 && row < getHeight() && col >= 0 && col < getWidth() && grid[row][col] == ' ';
+    }
+
+    public int getEntryRow() {
+        return entryRow;
+    }
+
+    public int getEntryCol() {
+        return entryCol;
+    }
+
+    public int getExitRow() {
+        return exitRow;
+    }
+
+    public int getExitCol() {
+        return exitCol;
     }
 }

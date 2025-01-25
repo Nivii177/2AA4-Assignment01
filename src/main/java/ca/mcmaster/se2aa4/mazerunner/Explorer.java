@@ -1,24 +1,74 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-
-
-class Explorer {
-    private static final Logger logger = LogManager.getLogger(Explorer.class);
+public class Explorer {
     private final Maze maze;
+    private int currentRow;
+    private int currentCol;
+    private char direction; 
 
     public Explorer(Maze maze) {
         this.maze = maze;
+        this.currentRow = maze.getEntryRow();
+        this.currentCol = maze.getEntryCol();
+        this.direction = 'E'; 
     }
 
-    public void startExploration() {
-        logger.info("Starting maze exploration...");
-        int[] entry = maze.getEntryPoint();
-        int[] exit = maze.getExitPoint();
-        logger.info("Entry point: (" + entry[0] + ", " + entry[1] + ")");
-        logger.info("Exit point: (" + exit[0] + ", " + exit[1] + ")");
-        // Placeholder for exploration logic.
+    public boolean verifyPath(String path) {
+        for (char move : path.toCharArray()) {
+            switch (move) {
+                case 'F': 
+                    if (!moveForward()) {
+                        return false; 
+                    }
+                    break;
+                case 'L': 
+                    turnLeft();
+                    break;
+                case 'R': 
+                    turnRight();
+                    break;
+                default:
+                    return false;
+            }
+        }
+        /
+        return currentRow == maze.getExitRow() && currentCol == maze.getExitCol();
+    }
+
+    private boolean moveForward() {
+        int newRow = currentRow;
+        int newCol = currentCol;
+
+        switch (direction) {
+            case 'N': newRow--; break;
+            case 'E': newCol++; break;
+            case 'S': newRow++; break;
+            case 'W': newCol--; break;
+        }
+
+        if (maze.isValidPosition(newRow, newCol)) {
+            currentRow = newRow;
+            currentCol = newCol;
+            return true;
+        }
+        return false; // Hit a wall or out of bounds
+    }
+
+    private void turnLeft() {
+        switch (direction) {
+            case 'N': direction = 'W'; break;
+            case 'E': direction = 'N'; break;
+            case 'S': direction = 'E'; break;
+            case 'W': direction = 'S'; break;
+        }
+    }
+
+    private void turnRight() {
+        switch (direction) {
+            case 'N': direction = 'E'; break;
+            case 'E': direction = 'S'; break;
+            case 'S': direction = 'W'; break;
+            case 'W': direction = 'N'; break;
+        }
     }
 }
