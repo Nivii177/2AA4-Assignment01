@@ -1,54 +1,42 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-package ca.mcmaster.se2aa4.mazerunner;
-
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
-
-    private static final Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
-        // Configure Apache CLI
+        logger.info("** Starting Maze Runner");
+
         Options options = new Options();
+        options.addOption("i", "input", true, "Input maze file");
+        options.addOption("p", "path", true, "Path to verify");
 
-        Option input = new Option("i", "input", true, "input file path");
-        input.setRequired(true);
-        options.addOption(input);
-
-        CommandLineParser parser = new DefaultParser();
-        HelpFormatter formatter = new HelpFormatter();
-
-        CommandLine cmd;
         try {
-            cmd = parser.parse(options, args);
+            CommandLineParser parser = new DefaultParser();
+            CommandLine cmd = parser.parse(options, args);
+
+            if (cmd.hasOption("i")) {
+                String inputFile = cmd.getOptionValue("i");
+                Maze maze = new Maze(inputFile);
+
+                if (cmd.hasOption("p")) {
+                    String path = cmd.getOptionValue("p");
+                    Explorer explorer = new Explorer(maze);
+                    boolean isValid = explorer.verifyPath(path);
+                    logger.info("Path verification result: {}", isValid ? "Valid" : "Invalid");
+                } else {
+                    logger.error("Missing required option: -p (path to verify)");
+                }
+            } else {
+                logger.error("Missing required option: -i (input maze file)");
+            }
         } catch (ParseException e) {
-            logger.error("Failed to parse command line arguments", e);
-            formatter.printHelp("MazeRunner", options);
-            return;
+            logger.error("Error parsing command-line arguments: ", e);
         }
 
-        String inputFilePath = cmd.getOptionValue("input");
-        logger.info("Input file path: " + inputFilePath);
-
-        Maze maze;
-        try {
-            maze = Maze.loadFromFile(inputFilePath);
-            logger.info("Maze loaded successfully.");
-        } catch (IOException e) {
-            logger.error("Error reading the maze file", e);
-            return;
-        }
-
-        Explorer explorer = new Explorer(maze);
-        explorer.startExploration();
-
-        logger.info("Maze exploration complete.");
+        logger.info("** End of Maze Runner");
     }
 }

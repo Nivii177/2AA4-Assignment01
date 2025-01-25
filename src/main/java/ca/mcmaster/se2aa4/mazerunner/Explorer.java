@@ -10,7 +10,7 @@ public class Explorer {
         this.maze = maze;
         this.currentRow = maze.getEntryRow();
         this.currentCol = maze.getEntryCol();
-        this.direction = 'E'; 
+        this.direction = 'E';
     }
 
     public boolean verifyPath(String path) {
@@ -28,10 +28,10 @@ public class Explorer {
                     turnRight();
                     break;
                 default:
-                    return false;
+                    return false; 
             }
         }
-        /
+   
         return currentRow == maze.getExitRow() && currentCol == maze.getExitCol();
     }
 
