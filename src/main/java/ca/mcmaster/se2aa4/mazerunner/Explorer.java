@@ -1,10 +1,12 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 public class Explorer {
+    private final PathFinder pathFinder;
     private final Maze maze;
     private int currentRow;
     private int currentCol;
     private char direction; 
+   
 
     public Explorer(Maze maze) {
         this.maze = maze;
@@ -35,6 +37,9 @@ public class Explorer {
         return currentRow == maze.getExitRow() && currentCol == maze.getExitCol();
     }
 
+    public String computePath() {
+        return pathFinder.findPath(maze, maze.getEntryRow(), maze.getEntryCol(), 'E'); 
+    }
     private boolean moveForward() {
         int newRow = currentRow;
         int newCol = currentCol;

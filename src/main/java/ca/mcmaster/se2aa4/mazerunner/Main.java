@@ -12,7 +12,7 @@ public class Main {
 
         Options options = new Options();
         options.addOption("i", "input", true, "Input maze file");
-        options.addOption("p", "path", true, "Path to verify");
+        options.addOption("algo", "algorithm", true, "Algorithm to use (default: right-hand rule)");
 
         try {
             CommandLineParser parser = new DefaultParser();
@@ -22,14 +22,11 @@ public class Main {
                 String inputFile = cmd.getOptionValue("i");
                 Maze maze = new Maze(inputFile);
 
-                if (cmd.hasOption("p")) {
-                    String path = cmd.getOptionValue("p");
-                    Explorer explorer = new Explorer(maze);
-                    boolean isValid = explorer.verifyPath(path);
-                    logger.info("Path verification result: {}", isValid ? "Valid" : "Invalid");
-                } else {
-                    logger.error("Missing required option: -p (path to verify)");
-                }
+                PathFinder pathFinder = new RightHandRule(); // Default algorithm
+                Explorer explorer = new Explorer(maze, pathFinder);
+
+                String computedPath = explorer.computePath();
+                logger.info("Computed Path: {}", computedPath);
             } else {
                 logger.error("Missing required option: -i (input maze file)");
             }
