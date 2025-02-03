@@ -8,8 +8,9 @@ public class Explorer {
     private char direction; 
    
 
-    public Explorer(Maze maze) {
+    public Explorer(Maze maze, PathFinder pathFinder) {
         this.maze = maze;
+        this.pathFinder = pathFinder;
         this.currentRow = maze.getEntryRow();
         this.currentCol = maze.getEntryCol();
         this.direction = 'E';
