@@ -9,7 +9,7 @@ public class RightHandRule implements PathFinder{
         StringBuilder path = new StringBuilder();
 
         while (!(row == maze.getExitRow() && col == maze.getExitCol())){
-            if (canMoveForward(maze, row, col, direction)){
+            if (canMoveRight(maze, row, col, direction)){
                 direction  = turnRight(direction);
                 path.append('R');
             }
@@ -25,7 +25,7 @@ public class RightHandRule implements PathFinder{
         }
         return factorizePath(path.toString());
     }
-    
+
     private boolean canMoveForward(Maze maze, int row, int col, char direction){
         int newRow = getNextRow(row, direction);
         int newCol = getNextCol(col, direction);

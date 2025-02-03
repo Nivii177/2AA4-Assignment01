@@ -1,8 +1,12 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger();
@@ -13,6 +17,7 @@ public class Main {
         Options options = new Options();
         options.addOption("i", "input", true, "Input maze file");
         options.addOption("algo", "algorithm", true, "Algorithm to use (default: right-hand rule)");
+        options.addOption("p", "path", true, "Path to verify");
 
         try {
             CommandLineParser parser = new DefaultParser();
@@ -25,8 +30,15 @@ public class Main {
                 PathFinder pathFinder = new RightHandRule(); // Default algorithm
                 Explorer explorer = new Explorer(maze, pathFinder);
 
+                if (cmd.hasOption("p")) {
+                    String path = cmd.getOptionValue("p");
+                    boolean isValid = explorer.verifyPath(path);
+                    logger.info("Path verification result: {}", isValid ? "Valid" : "Invalid");
+                }
+                else{
                 String computedPath = explorer.computePath();
                 logger.info("Computed Path: {}", computedPath);
+                }
             } else {
                 logger.error("Missing required option: -i (input maze file)");
             }

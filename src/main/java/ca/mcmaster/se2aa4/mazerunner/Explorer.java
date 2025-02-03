@@ -57,7 +57,7 @@ public class Explorer {
             currentCol = newCol;
             return true;
         }
-        return false; // Hit a wall or out of bounds
+        return false; 
     }
 
     private void turnLeft() {
