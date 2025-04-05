@@ -27,17 +27,19 @@ public class Main {
                 String inputFile = cmd.getOptionValue("i");
                 Maze maze = Maze.getInstance(inputFile);
 
-                PathFinder pathFinder = new RightHandRule(); // Default algorithm
+                // Use Factory to create PathFinder
+                String algorithm = cmd.getOptionValue("algo", "right-hand");
+                PathFinder pathFinder = PathFinderFactory.create(algorithm); // Factory call
+
                 Explorer explorer = new Explorer(maze, pathFinder);
 
                 if (cmd.hasOption("p")) {
                     String path = cmd.getOptionValue("p");
                     boolean isValid = explorer.verifyPath(path);
                     logger.info("Path verification result: {}", isValid ? "Valid" : "Invalid");
-                }
-                else{
-                String computedPath = explorer.computePath();
-                logger.info("Computed Path: {}", computedPath);
+                } else {
+                    String computedPath = explorer.computePath();
+                    logger.info("Computed Path: {}", computedPath);
                 }
             } else {
                 logger.error("Missing required option: -i (input maze file)");
