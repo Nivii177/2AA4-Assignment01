@@ -25,7 +25,7 @@ public class Main {
 
             if (cmd.hasOption("i")) {
                 String inputFile = cmd.getOptionValue("i");
-                Maze maze = new Maze(inputFile);
+                Maze maze = Maze.getInstance(inputFile);
 
                 PathFinder pathFinder = new RightHandRule(); // Default algorithm
                 Explorer explorer = new Explorer(maze, pathFinder);

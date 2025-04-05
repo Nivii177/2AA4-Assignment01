@@ -7,15 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Maze {
-    private char[][] grid;
-    private int entryRow;
-    private int entryCol;
-    private int exitRow;
-    private int exitCol;
+    private static Maze instance;
 
-    public Maze(String filePath) {
+    private char[][] grid;
+    private int entryRow, entryCol;
+    private int exitRow, exitCol;
+
+    private Maze(String filePath) {
         parseMaze(filePath);
         findEntryAndExit();
+    }
+
+    public static Maze getInstance(String filePath) {
+        if (instance == null) {
+            instance = new Maze(filePath);
+        }
+        return instance;
     }
 
     private void parseMaze(String filePath) {
@@ -32,7 +39,6 @@ public class Maze {
     }
 
     private void findEntryAndExit() {
-        // Find entry 
         for (int row = 0; row < grid.length; row++) {
             if (grid[row][0] == ' ') {
                 entryRow = row;
@@ -41,7 +47,6 @@ public class Maze {
             }
         }
 
-        // Find exit 
         for (int row = 0; row < grid.length; row++) {
             if (grid[row][grid[row].length - 1] == ' ') {
                 exitRow = row;
@@ -82,4 +87,5 @@ public class Maze {
     public int getExitCol() {
         return exitCol;
     }
+
 }
