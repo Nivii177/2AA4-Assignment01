@@ -1,4 +1,3 @@
-// === ExplorerTest.java ===
 package ca.mcmaster.se2aa4.mazerunner;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +10,7 @@ public class ExplorerTest {
 
     @BeforeEach
     public void setUp() {
-        maze = new Maze("./examples/small.maz.txt");
+        maze = Maze.getInstance("./examples/small.maz.txt");
         explorer = new Explorer(maze, new RightHandRule());
     }
 
